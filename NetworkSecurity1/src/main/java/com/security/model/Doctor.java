@@ -60,6 +60,8 @@ public class Doctor {
 		String pass=Encryption.sha256Encrypt(password);
 		this.password = pass;
 	}
-	
+	public void addPatient(DoctorPatient patient) {
+		patients.add(patient);
+	}
 
 }

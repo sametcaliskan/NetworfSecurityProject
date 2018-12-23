@@ -24,4 +24,10 @@ public class Controller {
 		}
 		return false;
 	}
+	public void giveAuthorizationToDoctor(String doctorUserName,String patientUserName) {
+		securityService.giveAuthorizationToDoctor(doctorUserName, patientUserName);
+	}
+	public void giveAuthorizationToNurse(String nurseUserName,String patientUserName) {
+		securityService.giveAuthorizationToNurse(nurseUserName,patientUserName);
+	}
 }

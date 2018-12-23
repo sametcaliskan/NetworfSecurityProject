@@ -1,11 +1,17 @@
 package com.security.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.security.encryptionAlgorithm.Encryption;
 
@@ -19,8 +25,10 @@ public class Nurse {
 		    private String userName;
 		    private String password;
 		    private Doctor doctor;
+		    private List<NursePatient> patients;
 		    protected Nurse() {}
 		    public Nurse(String firstName,String lastName) {
+		    	this.patients=new ArrayList<>();
 		    	this.firstName=firstName;
 		    	this.lastName=lastName;
 		    	this.userName=firstName+lastName;
@@ -52,6 +60,12 @@ public class Nurse {
 			public String getUserName() {
 				return userName;
 			}	
-			
+			public void addPatient(NursePatient patient) {
+				patients.add(patient);
+			}
+			@OneToMany(mappedBy="patient",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+			public List<NursePatient> getPatients() {
+				return patients;
+			}
 	}
 

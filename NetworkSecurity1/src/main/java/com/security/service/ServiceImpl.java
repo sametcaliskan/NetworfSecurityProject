@@ -13,6 +13,7 @@ import com.security.encryptionAlgorithm.Encryption;
 import com.security.model.Doctor;
 import com.security.model.DoctorPatient;
 import com.security.model.Nurse;
+import com.security.model.NursePatient;
 import com.security.model.Patient;
 import com.security.model.Relative;
 
@@ -75,6 +76,14 @@ public class ServiceImpl {
 		Patient patient=patientRepo.findPatient(patientUserName);
 		DoctorPatient authorization=new DoctorPatient(doctor,patient);
 		patient.addDoctor(authorization);
+		doctor.addPatient(authorization);
+	}
+	public void giveAuthorizationToNurse(String nurseUserName,String patientUserName) {
+		Nurse nurse=nurseRepo.findNurse(nurseUserName);
+		Patient patient=patientRepo.findPatient(patientUserName);
+		NursePatient authorization=new NursePatient(nurse,patient);
+		nurse.addPatient(authorization);
+		patient.addNurse(authorization);
 	}
 	
 }

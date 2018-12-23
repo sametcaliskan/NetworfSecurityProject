@@ -75,5 +75,8 @@ public class Patient {
 		
 		doctors.add(record);
 	}		
+	public void addNurse(NursePatient nurse) {
+		nurses.add(nurse);
+	}
 
 }

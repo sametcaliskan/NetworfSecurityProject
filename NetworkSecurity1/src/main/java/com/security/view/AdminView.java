@@ -2,6 +2,7 @@ package com.security.view;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 
 public class AdminView {
@@ -36,7 +37,7 @@ public class AdminView {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 305);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 

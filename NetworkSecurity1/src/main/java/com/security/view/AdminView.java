@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -19,6 +20,13 @@ public class AdminView {
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private JLabel LoginSystem;
+	private JTextField txtRole;
+	
+	DoctorViewFrame doctorview=new DoctorViewFrame();
+	NurseViewFrame nurseview=new NurseViewFrame();
+	PatientViewFrame patientview=new PatientViewFrame();
+	RelativeViewFrame relativeview=new RelativeViewFrame();
+	
 
 	/**
 	 * Launch the application.
@@ -74,12 +82,46 @@ public class AdminView {
 		frame.getContentPane().add(LoginSystem);
 		
 		JButton btnLogin = new JButton("LOGIN");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String password=txtPassword.getText();
+				String username =txtUsername.getText();
+				
+				/*if (password.contains(" ")&& username.contains("")) {
+					txtPassword.setText(null);
+					txtUsername.setText(null);
+				}else {
+					JOptionPane.showMessageDialog(null, "Invalid Login","Login Error" , JOptionPane.ERROR_MESSAGE);
+				}*/
+				String role =txtRole.getText();
+				
+				
+				if(role== "Doctor" || role== "DOCTOR") {
+					doctorview.setVisible(true);
+				
+				}else if(role == " Nurse"  || role == " NURSE" ) {
+					nurseview.setVisible(true);
+					
+					
+				}else if(role == " Patient" || role == " PATIENT") {
+					patientview.setVisible(true);
+					
+				}else if(role == " Relative" || role == " RELATIVE") {
+					relativeview.setVisible(true);
+					
+				}else {
+					
+				}
+				
+			}
+		});
 		btnLogin.setBounds(100, 305, 115, 29);
 		frame.getContentPane().add(btnLogin);
 		
 		JButton btnExit = new JButton("EXIT");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
 				
 			}
 		});
@@ -91,6 +133,11 @@ public class AdminView {
 		frame.getContentPane().add(separator);
 		
 		JRadioButton rdbtnDoctor = new JRadioButton("Doctor");
+		rdbtnDoctor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//doctorview.setVisible(true);
+			}
+		});
 		rdbtnDoctor.setBounds(172, 183, 89, 29);
 		frame.getContentPane().add(rdbtnDoctor);
 		
@@ -105,5 +152,14 @@ public class AdminView {
 		JRadioButton rdbtnRelative = new JRadioButton("Relative");
 		rdbtnRelative.setBounds(454, 183, 155, 29);
 		frame.getContentPane().add(rdbtnRelative);
+		
+		JLabel lblEnterYourRole = new JLabel("Enter your role");
+		lblEnterYourRole.setBounds(182, 230, 134, 20);
+		frame.getContentPane().add(lblEnterYourRole);
+		
+		txtRole = new JTextField();
+		txtRole.setColumns(10);
+		txtRole.setBounds(308, 224, 146, 31);
+		frame.getContentPane().add(txtRole);
 	}
 }

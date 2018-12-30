@@ -1,6 +1,6 @@
 package com.security.model;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,8 +15,7 @@ import com.security.encryptionAlgorithm.Encryption;
 
 @Entity
 public class Doctor {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+
 	private Long id;
 	private String firstName;
 	private String lastName;
@@ -27,14 +26,32 @@ public class Doctor {
 
 	protected Doctor() {}
 	public Doctor(String firstName,String lastName) {
-		this.nurses=new ArrayList<>();
-		this.patients=new ArrayList<>();
 		this.firstName=firstName;
 		this.lastName=lastName;
 		this.userName=firstName+lastName;
 	}
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return id;
+	}
+	public void setId(Long  id) {
+		this.id=id;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public void setNurses(List<Nurse> nurses) {
+		this.nurses = nurses;
+	}
+	public void setPatients(List<DoctorPatient> patients) {
+		this.patients = patients;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -48,11 +65,11 @@ public class Doctor {
 	public String getPassword() {
 		return password;
 	}
-	@OneToMany(mappedBy="nurse" ,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="doctor" ,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<Nurse> getNurses() {
 		return nurses;
 	}
-	@OneToMany(mappedBy="patient",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="doctor",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<DoctorPatient> getPatients() {
 		return patients;
 	}

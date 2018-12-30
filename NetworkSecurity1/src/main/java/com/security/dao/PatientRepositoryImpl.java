@@ -11,10 +11,11 @@ import com.security.model.Patient;
 
 @Repository
 @Transactional(readOnly = true)
-public class PatientRepositoryImpl {
+public class PatientRepositoryImpl implements PatientRepositoryInterface{
 	@PersistenceContext
 	EntityManager entityManager;
-	
+	@SuppressWarnings("unchecked")
+	@Override
 	public Patient findPatient(String userName) {
 		Query eventQuery = entityManager.createQuery("Select d from Patient d where d.username=:userName ");
 		eventQuery.setParameter("userName",userName );

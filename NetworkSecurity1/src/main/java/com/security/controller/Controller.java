@@ -1,23 +1,45 @@
 package com.security.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.security.service.ServiceImpl;
+import com.security.model.Doctor;
+import com.security.model.Patient;
+import com.security.service.SecurityServiceInterface;
 
 
+
+@Transactional(propagation = Propagation.NEVER)
 public class Controller {
+	public static Controller controller;
 	@Autowired
-	private ServiceImpl securityService;
+	private SecurityServiceInterface securityService;
 	
+	public static Controller getController() {
+		if(controller==null) {
+			controller=new Controller();
+		}
+			return controller;
+	}
 	
-	
-	public boolean login(String userName,String password,String user) {
+	public boolean validateLogin(String userName,String password,String user) {
 		switch(user) {
 			case "Doctor": 
 				return securityService.doctorLogin(userName, password);
 			case "Patient":
-				return securityService.patientLogin(userName, password);
-			case "Nurse":
+				System.out.println(userName+password);
+				String a=userName;
+				String b=password;
+				System.out.println(a+b);
+				try {
+				boolean flag= securityService.patientLogin(a,b);
+					break;}catch(Exception e){
+						e.getMessage();
+					}
+				case "Nurse":
 				return securityService.nurseLogin(userName, password);
 			case "Relative":
 				return securityService.relativeLogin(userName, password);
@@ -29,5 +51,19 @@ public class Controller {
 	}
 	public void giveAuthorizationToNurse(String nurseUserName,String patientUserName) {
 		securityService.giveAuthorizationToNurse(nurseUserName,patientUserName);
+	}
+	
+	public List<Patient> getAllPatients(){
+		return securityService.getAllPatients();
+	}
+	public Patient getPatientByUsername(String username) {
+		return securityService.getPatientByUsername(username);
+	}
+	public Doctor getDoctorByUsername(String username) {
+		return securityService.getDoctorByUsername(username);
+	}
+	
+	public Patient addPatient(String name,String surname,String birthday,String diagnostic) {
+		return securityService.addPatient(name,surname,birthday,diagnostic);
 	}
 }

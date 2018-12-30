@@ -11,7 +11,7 @@ import com.security.model.Nurse;
 
 @Repository
 @Transactional(readOnly = true)
-public class NurseRepositoryImpl {
+public class NurseRepositoryImpl implements NurseRepositoryInterface{
 	@PersistenceContext
 	EntityManager entityManager;
 

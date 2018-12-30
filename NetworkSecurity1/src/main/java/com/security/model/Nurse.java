@@ -17,8 +17,7 @@ import com.security.encryptionAlgorithm.Encryption;
 
 @Entity
 public class Nurse {
-			@Id
-		    @GeneratedValue(strategy=GenerationType.AUTO)
+			
 		    private Long id;
 		    private String firstName;
 		    private String lastName;
@@ -28,11 +27,27 @@ public class Nurse {
 		    private List<NursePatient> patients;
 		    protected Nurse() {}
 		    public Nurse(String firstName,String lastName) {
-		    	this.patients=new ArrayList<>();
 		    	this.firstName=firstName;
 		    	this.lastName=lastName;
 		    	this.userName=firstName+lastName;
 		    }
+		    public void setId(Long id) {
+				this.id = id;
+			}
+			public void setFirstName(String firstName) {
+				this.firstName = firstName;
+			}
+			public void setLastName(String lastName) {
+				this.lastName = lastName;
+			}
+			public void setUserName(String userName) {
+				this.userName = userName;
+			}
+			public void setPatients(List<NursePatient> patients) {
+				this.patients = patients;
+			}
+			@Id
+		    @GeneratedValue(strategy=GenerationType.AUTO)
 			public Long getId() {
 				return id;
 			}
@@ -63,7 +78,7 @@ public class Nurse {
 			public void addPatient(NursePatient patient) {
 				patients.add(patient);
 			}
-			@OneToMany(mappedBy="patient",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+			@OneToMany(mappedBy="nurse",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 			public List<NursePatient> getPatients() {
 				return patients;
 			}

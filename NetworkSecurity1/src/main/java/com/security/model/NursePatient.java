@@ -8,8 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 @Entity
 public class NursePatient {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+
 	private Long id;
 	private Nurse nurse;
 	private Patient patient;
@@ -17,6 +16,14 @@ public class NursePatient {
 	public NursePatient(Nurse nurse,Patient patient) {
 		this.nurse=nurse;
 		this.patient=patient;
+	}
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	@ManyToOne
 	@JoinColumn(name="nurseId")

@@ -11,7 +11,7 @@ import com.security.model.Relative;
 
 @Repository
 @Transactional(readOnly = true)
-public class RelativeRepositoryImpl {
+public class RelativeRepositoryImpl implements RelativeRepositoryInterface{
 	@PersistenceContext
 	EntityManager entityManager;
 

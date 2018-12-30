@@ -12,7 +12,7 @@ import com.security.model.Doctor;
 
 @Repository
 @Transactional(readOnly = true)
-public class DoctorRepositoryImpl {
+public class DoctorRepositoryImpl implements DoctorRepositoryInterface {
 	@PersistenceContext
 	EntityManager entityManager;
 	

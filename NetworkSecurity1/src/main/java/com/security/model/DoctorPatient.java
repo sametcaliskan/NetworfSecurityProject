@@ -6,10 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class DoctorPatient {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+
 	private Long id;
 	private Doctor doctor;
 	private Patient patient;
@@ -18,8 +19,17 @@ public class DoctorPatient {
 		this.doctor=doctor;
 		this.patient=patient;
 	}
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	@ManyToOne
 	@JoinColumn(name="doctorId")
+	@JsonIgnore
 	public Doctor getDoctor() {
 		return doctor;
 	}
@@ -28,6 +38,7 @@ public class DoctorPatient {
 	}
 	@ManyToOne
 	@JoinColumn(name="patientId")
+	@JsonIgnore
 	public Patient getPatient() {
 		return patient;
 	}

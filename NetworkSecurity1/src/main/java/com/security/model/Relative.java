@@ -17,11 +17,13 @@ public class Relative {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private String username;
 	private Patient patient;
 	protected Relative() {}
 	public Relative(String firstName,String lastName) {
 		this.firstName=firstName;
 		this.lastName=lastName;
+		this.username=firstName+lastName;
 	}
 	public void setId(Long id) {
 		this.id = id;
@@ -57,6 +59,12 @@ public class Relative {
 	}
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+	public void setUsername(String username) {
+		this.username=username;
+	}
+	public String getUsername() {
+		return username;
 	}
 
 }

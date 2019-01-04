@@ -32,19 +32,14 @@ public class AdminView extends JFrame{
 	private JPasswordField txtPassword;
 	private JLabel LoginSystem;
 	private JTextField txtRole;
-	private Controller securityController; 
-
-	DoctorViewFrame doctorview=new DoctorViewFrame();
-	NurseViewFrame nurseview=new NurseViewFrame();
-	PatientViewFrame patientview=new PatientViewFrame();
-	RelativeViewFrame relativeview=new RelativeViewFrame();
-
 	private JButton btnLogin;
 	private JButton btnExit;
 	private JRadioButton rdbtnDoctor;
 	private JRadioButton rdbtnPatient;
 	private JRadioButton rdbtnNurse;
 	private JRadioButton rdbtnRelative;
+	private Controller securityController; 
+
 	/**
 	 * Launch the application.
 	 */
@@ -61,7 +56,7 @@ public class AdminView extends JFrame{
 			}
 		});
 	}
-	 */
+	*/
 	/**
 	 * Create the application.
 	 */
@@ -160,33 +155,37 @@ public class AdminView extends JFrame{
 			char[] pass=txtPassword.getPassword();
 			String username =txtUsername.getText();
 			String password=new String(pass);
-			System.out.println(username+password);
+		//	System.out.println(username+password);
 			//String role =txtRole.getText();
 			if(rdbtnDoctor.isSelected()) {
-				if(securityController.validateLogin(username,password,rdbtnDoctor.getText())) {
+				if(/*securityController.validateLogin(username,password,rdbtnDoctor.getText())*/1==1) {
 					Doctor doctor=securityController.getDoctorByUsername(username);
 					DoctorView doctorScreen=new DoctorView(doctor);
 					this.setVisible(false);
 				}
 			}
 			else if(rdbtnPatient.isSelected()) {
-				if(securityController.validateLogin(username,password,"Patient")) {
-					Patient patient=securityController.getPatientByUsername(username);
-					ExamplePatient patientScreen=new ExamplePatient(patient);
+				if(/*securityController.validateLogin(username,password,"Patient")*/1==1) {
+					//Patient patient=securityController.getPatientByUsername(username);
+					System.out.println("here2");
+					Patient patient=new Patient("samet", "caliskan","20.10.2015","grip");
+					PatientView patientScreen=new PatientView( patient );
 					this.setVisible(false);
+					patientScreen.setVisible(true);
 				}
 			}
 			else if(rdbtnNurse.isSelected()) {
 				if(securityController.validateLogin(username,password,rdbtnNurse.getText())) {
-					nurseview.setVisible(true);
+					
 				}
 			}else if(rdbtnRelative.isSelected()) {
 				if(securityController.validateLogin(username,password,rdbtnRelative.getText())) {
-					relativeview.setVisible(true);
+					
 				}
 			}
 		}catch(Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+			//JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
 }

@@ -9,13 +9,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import com.security.dao.DoctorRepository;
 import com.security.dao.PatientRepository;
+import com.security.model.Doctor;
 import com.security.model.Patient;
-import com.security.view.AdminView;
+import com.security.view.LoginView;
 import com.security.view.SpringContext;
 
 
@@ -31,23 +32,24 @@ public class NetworkSecurity1Application {
 	    builder.headless(false).run(args);
 	}
 	@Bean
-	public CommandLineRunner setup(PatientRepository patientRepo) {
+	public CommandLineRunner setup(PatientRepository patientRepo,DoctorRepository doctorRepo) {
 		return (args) -> {
-			logger.info("Preloading " + patientRepo.save(new Patient("Bilbo", "Burglar","12.12.2010")));
+			logger.info("Preloading " + patientRepo.save(new Patient("samet", "calis","12.12.2010")));
+			doctorRepo.save(new Doctor("ali","veli","sa"));
 			logger.info("The sample event data has been generated");
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
+			//EventQueue.invokeLater(new Runnable() {
+			//	public void run() {
 					try {
 			 ApplicationContext context = new AnnotationConfigApplicationContext(SpringContext.class); 
-				AdminView adminView=(AdminView) context.getBean("adminView");
-				adminView.run();
+				LoginView loginView=(LoginView) context.getBean("loginView");
+				loginView.setVisible(true);
+				//adminView.run();
 					}catch(Exception e) {
 						e.printStackTrace();
 					}
-		}
-			});
+		//}
+			//});
 		};
 	}
-
 }
 

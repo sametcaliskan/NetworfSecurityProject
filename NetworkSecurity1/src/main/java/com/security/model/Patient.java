@@ -32,12 +32,15 @@ public class Patient {
 		this.firstName=firstName;
 		this.lastName=lastName;
 		this.userName=firstName+lastName;
+		System.out.println(userName);
 		this.birthdate=birthdate;
 	}public Patient(String name,String surname,String birthdate,String diagnostic) {
 		this.firstName=name;
 		this.lastName=surname;
 		this.birthdate=birthdate;
 		this.diagnostic=diagnostic;
+		this.userName=firstName+userName;
+		
 	}
 	
 	public void setFirstName(String firstName) {

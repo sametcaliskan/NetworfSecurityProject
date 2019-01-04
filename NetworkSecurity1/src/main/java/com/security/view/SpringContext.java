@@ -12,9 +12,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 	   @Value("${title}")
 	    String title;
 
-	    @Bean(name = "adminView")
-	    public AdminView createAdminView() {
-	        return new AdminView(title);
+	    @Bean(name = "loginView")
+	    public LoginView createAdminView() {
+	    	 //System.setProperty("java.awt.headless", "false");
+	        return new LoginView(title);
 	    }
 
 	    @Bean

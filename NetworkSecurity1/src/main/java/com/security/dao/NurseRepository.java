@@ -7,4 +7,6 @@ import com.security.model.Nurse;
 @Repository("nurseRepository")
 public interface NurseRepository extends JpaRepository<Nurse,Long>, NurseRepositoryInterface{
 
+	
+
 }

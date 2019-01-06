@@ -3,22 +3,32 @@ package com.security.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Configurable;
 
 import com.security.model.Doctor;
+import com.security.model.DoctorPatient;
+import com.security.model.Nurse;
 import com.security.model.Patient;
+import com.security.model.Relative;
 import com.security.service.SecurityServiceInterface;
+import com.security.service.ServiceImpl;
 
 
 
 
 //@Transactional(propagation = Propagation.NEVER)
+@Configurable
 public class Controller {
 	public static Controller controller;
 	
-	@Autowired
+
 	private SecurityServiceInterface securityService;
-	
+
+	private Controller() {
+		ServiceImpl service= ApplicationContextHolder.getContext().getBean(ServiceImpl.class);
+		service.findme();
+		this.securityService=service;
+	}
 	public static Controller getController() {
 		if(controller==null) {
 			controller=new Controller();
@@ -39,11 +49,9 @@ public class Controller {
 		
 		switch(user) {
 			case "Doctor": 
-				System.out.println("controller:"+username+password);
-				securityService.doctorLogin(username, password);
-				break;
+				return securityService.doctorLogin(username, password);
 			case "Patient":	
-				 securityService.patientLogin(username,password);
+				return securityService.patientLogin(username,password);
 			case "Nurse":
 				return securityService.nurseLogin(username, password);
 			case "Relative":
@@ -100,5 +108,31 @@ public class Controller {
 	public void deleteRelative(Long id) {
 		securityService.deleteRelative(id);
 		
+	}
+	public List<Patient> getDoctorPatients(Long id) {
+		return securityService.getDoctorPatient(id);
+		
+	}
+	public DoctorPatient addDoctorPatient(Doctor doctor,Patient patient) {
+		return securityService.addDoctorPatient(doctor,patient);
+		
+	}
+	public List<Nurse> getDoctorNurses(Long id) {
+		return securityService.getDoctorNurses(id);
+	}
+	public Nurse getNurseByUsername(String username) {
+		return securityService.getNurseByUsername(username);
+	}
+	public Relative getRelativeByUsername(String username) {
+		return securityService.getRelativeByUsername(username);
+	}
+	public List<Patient> getNursePatients(Long id) {
+		return securityService.getNursePatients(id);
+	}
+	public Relative getRelativeOfPatient(Long id) {
+		return securityService.getRelativeOfPatient(id);
+	}
+	public List<Nurse> getPatientNurses(Long id) {
+		return securityService.getPatientNurses(id);
 	}
 }

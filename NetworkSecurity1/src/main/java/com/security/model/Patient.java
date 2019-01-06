@@ -1,6 +1,7 @@
 package com.security.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,11 +36,13 @@ public class Patient {
 		System.out.println(userName);
 		this.birthdate=birthdate;
 	}public Patient(String name,String surname,String birthdate,String diagnostic) {
+		nurses=new ArrayList<>();
+		doctors=new ArrayList<>();
 		this.firstName=name;
 		this.lastName=surname;
 		this.birthdate=birthdate;
 		this.diagnostic=diagnostic;
-		this.userName=firstName+userName;
+		this.userName=firstName+lastName;
 		
 	}
 	
@@ -80,7 +83,8 @@ public class Patient {
 		return birthdate;
 	}
 	public void setPassword(String password) {
-		String pass=Encryption.sha256Encrypt(password);
+		
+		String pass=Encryption.sha256Encrypt("hello");
 		this.password = pass;
 	}
 	public String getPassword() {
@@ -112,6 +116,9 @@ public class Patient {
 	}
 	public void addNurse(NursePatient nurse) {
 		nurses.add(nurse);
+	}
+	public void addPatient(DoctorPatient doctor) {
+		doctors.add(doctor);
 	}
 	public void setNurses(List<NursePatient> nurses) {
 		this.nurses = nurses;

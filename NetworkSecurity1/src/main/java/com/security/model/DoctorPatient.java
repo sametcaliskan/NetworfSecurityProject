@@ -28,7 +28,7 @@ public class DoctorPatient {
 		this.id = id;
 	}
 	@ManyToOne
-	@JoinColumn(name="doctorId")
+	@JoinColumn(name="doctor")
 	@JsonIgnore
 	public Doctor getDoctor() {
 		return doctor;
@@ -37,7 +37,7 @@ public class DoctorPatient {
 		this.doctor = doctor;
 	}
 	@ManyToOne
-	@JoinColumn(name="patientId")
+	@JoinColumn(name="patient")
 	@JsonIgnore
 	public Patient getPatient() {
 		return patient;

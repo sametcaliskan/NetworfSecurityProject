@@ -7,4 +7,6 @@ import com.security.model.Relative;
 @Repository("relativeRepository")
 public interface RelativeRepository extends JpaRepository<Relative,Long>,RelativeRepositoryInterface{
 
+
+
 }

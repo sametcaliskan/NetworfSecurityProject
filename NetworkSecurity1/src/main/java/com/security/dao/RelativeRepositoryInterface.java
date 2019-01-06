@@ -4,4 +4,5 @@ import com.security.model.Relative;
 
 public interface RelativeRepositoryInterface {
 	public Relative findRelative(String userName);
+	Relative getRelativeOfPatient(Long id);
 }

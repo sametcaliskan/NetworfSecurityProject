@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.security.controller.Controller;
 import com.security.model.Nurse;
+import com.security.model.Patient;
 
 import java.awt.Font;
 import javax.swing.JScrollPane;
@@ -86,10 +87,10 @@ public class NurseView extends JFrame {
 		button.setFont(new Font("Calibri", Font.PLAIN, 16));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				setVisible(false);
 			}
 		});
-		button.setBounds(758, 419, 99, 26);
+		button.setBounds(23, 419, 99, 26);
 		contentPane.add(button);
 		
 		nurseUsernameTextField = new JTextField();
@@ -142,7 +143,7 @@ public class NurseView extends JFrame {
 				updateButtonAction(arg0);
 			}
 		});
-		btnUpdate.setBounds(23, 296, 99, 26);
+		btnUpdate.setBounds(191, 296, 99, 26);
 		contentPane.add(btnUpdate);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -166,7 +167,19 @@ public class NurseView extends JFrame {
 		patientModel.addColumn("surname");
 		patientModel.addColumn("birthday");
 		patientModel.addColumn("diagnostic");
-		
+		try {
+			for(Patient patient:securityController.getNursePatients(nurse.getId())) {
+				patientModel.addRow(new Object[] {
+						patient.getId(),
+						patient.getFirstName(),
+						patient.getLastName(),
+						patient.getBirthdate(),
+						patient.getDiagnostic()
+				});
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		patientTable.setModel(patientModel);	
 	}
 	private void updateButtonAction(ActionEvent arg0) {

@@ -8,7 +8,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.security.controller.Controller;
 import com.security.model.Doctor;
+import com.security.model.Nurse;
 import com.security.model.Patient;
+import com.security.model.Relative;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -132,32 +134,37 @@ public class LoginView extends JFrame {
 		try {
 			String username=usernameTextField.getText();
 			String password=passwordTextField.getText();
-			System.out.println(username+password);
 			if(rdbtnDoctor.isSelected()) {
 				if(securityController.validateLogin(username,password,rdbtnDoctor.getText())) {
 					Doctor doctor=securityController.getDoctorByUsername(username);
+					System.out.println(doctor.toString());
 					DoctorView doctorScreen=new DoctorView(doctor);
-					this.setVisible(false);
+					
+					//this.setVisible(false);
 					doctorScreen.setVisible(true);
 				}
 			}
 			else if(rdbtnPatient.isSelected()) {
 				if(securityController.validateLogin(username,password,"Patient")) {
 					Patient patient=securityController.getPatientByUsername(username);
-					
+					System.out.println(patient.getFirstName()+patient.getBirthdate());
 					//Patient patient=new Patient("samet", "caliskan","20.10.2015","grip");
 					PatientView patientScreen=new PatientView( patient );
-					this.setVisible(false);
+					//this.setVisible(false);
 					patientScreen.setVisible(true);
 				}
 			}
 			else if(rdbtnNurse.isSelected()) {
 				if(securityController.validateLogin(username,password,rdbtnNurse.getText())) {
-					
+					Nurse nurse=securityController.getNurseByUsername(username);
+					NurseView nurseScreen=new NurseView(nurse);
+					nurseScreen.setVisible(true);
 				}
 			}else if(rdbtnRelative.isSelected()) {
 				if(securityController.validateLogin(username,password,rdbtnRelative.getText())) {
-					
+					Relative relative=securityController.getRelativeByUsername(username);
+					RelativeView relativeScreen=new RelativeView(relative);
+					relativeScreen.setVisible(true);
 				}
 			}
 		} catch (Exception m) {

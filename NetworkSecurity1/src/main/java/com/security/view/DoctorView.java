@@ -8,6 +8,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.security.controller.Controller;
 import com.security.model.Doctor;
+import com.security.model.DoctorPatient;
+import com.security.model.Nurse;
+import com.security.model.Patient;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -70,18 +74,18 @@ public class DoctorView extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				selectedPatientId=patientTableMouseClickedAction(arg0);
-			}
-		});
 		scrollPane.setBounds(404, 54, 387, 129);
 		contentPane.add(scrollPane);
 		
 		patientTable = new JTable();
 		scrollPane.setViewportView(patientTable);
 		loadPatientTableData();
+		patientTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				selectedPatientId=patientTableMouseClickedAction(arg0);
+			}
+		});
 		
 		JLabel lblPatientTable = new JLabel("Patient Table:");
 		lblPatientTable.setFont(new Font("Calibri", Font.PLAIN, 16));
@@ -114,18 +118,18 @@ public class DoctorView extends JFrame {
 		surnameTextField.setColumns(10);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				selectedNurseId=nurseTableMouseClickedAction(arg0);
-			}
-		});
 		scrollPane_1.setBounds(7, 54, 387, 129);
 		contentPane.add(scrollPane_1);
-		
 		nurseTable = new JTable();
 		scrollPane_1.setViewportView(nurseTable);
 		loadNurseTableData();
+		nurseTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				selectedNurseId=nurseTableMouseClickedAction(arg0);
+				System.out.println("selected nurse id"+selectedNurseId);
+			}
+		});
 		
 		JLabel lblNurseTable = new JLabel("Nurse Table:");
 		lblNurseTable.setFont(new Font("Calibri", Font.PLAIN, 16));
@@ -165,14 +169,14 @@ public class DoctorView extends JFrame {
 		btnAddPatient.setBounds(484, 371, 107, 26);
 		contentPane.add(btnAddPatient);
 		
-		JButton btnG = new JButton("Give Authorization");
-		btnG.addActionListener(new ActionListener() {
+		JButton btnGiveAuthorization = new JButton("Give Authorization");
+		btnGiveAuthorization.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				giveAuthorizationButtonAction(arg0);
 			}
 		});
-		btnG.setBounds(7, 206, 163, 23);
-		contentPane.add(btnG);
+		btnGiveAuthorization.setBounds(7, 206, 163, 23);
+		contentPane.add(btnGiveAuthorization);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Calibri", Font.PLAIN, 16));
@@ -204,13 +208,23 @@ public class DoctorView extends JFrame {
 
 			
 		});
-		btnUpdate.setBounds(7, 371, 89, 26);
+		btnUpdate.setBounds(272, 371, 89, 26);
 		contentPane.add(btnUpdate);
 		
 		JButton btnUpdateButton = new JButton("Update Patient");
 		btnUpdateButton.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnUpdateButton.setBounds(601, 371, 129, 26);
 		contentPane.add(btnUpdateButton);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.setFont(new Font("Calibri", Font.PLAIN, 16));
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		});
+		btnExit.setBounds(7, 373, 89, 26);
+		contentPane.add(btnExit);
 	}
 	
 	private void loadNurseTableData() {
@@ -218,6 +232,18 @@ public class DoctorView extends JFrame {
 		nurseModel.addColumn("Id");
 		nurseModel.addColumn("name");
 		nurseModel.addColumn("surname");
+		
+			for(Nurse nurse:securityController.getDoctorNurses(doctor.getId())) {
+				System.out.println(nurse.getId()+nurse.getFirstName()+nurse.getLastName());
+				nurseModel.addRow(new Object[] {
+						nurse.getId(),
+						nurse.getFirstName(),
+						nurse.getLastName()
+				});
+			}
+	
+			
+		
 		nurseTable.setModel(nurseModel);	
 	}
 	private void loadPatientTableData() {
@@ -227,6 +253,20 @@ public class DoctorView extends JFrame {
 		patientModel.addColumn("surname");
 		patientModel.addColumn("birthday");
 		patientModel.addColumn("diagnostic");
+		try {
+		for(Patient patient:securityController.getDoctorPatients(doctor.getId())) {
+			System.out.println("patient:"+patient.getFirstName()+patient.getLastName()+patient.getBirthdate()+patient.getDiagnostic());
+			patientModel.addRow(new Object [] {
+				patient.getId(),
+				patient.getFirstName(),
+				patient.getLastName(),
+				patient.getBirthdate(),
+				patient.getDiagnostic()
+			});
+		}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		patientTable.setModel(patientModel);	
 	}
 	private void updateButtonAction(ActionEvent arg0) {
@@ -247,14 +287,17 @@ public class DoctorView extends JFrame {
 		String surname=surnameTextField.getText();
 		String birthday=birthdayTextField.getText();
 		String diagnostic=diagnosticTextField.getText();
-			securityController.addPatient(name,surname,birthday,diagnostic);
+		Patient patient=securityController.addPatient(name,surname,birthday,diagnostic);
+		securityController.addDoctorPatient(doctor,patient);
 		}catch(Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			 e.printStackTrace();
 		}
+		loadPatientTableData();
 	}
 	private void giveAuthorizationButtonAction(ActionEvent arg0) {
 		try {
 			securityController.giveAuthorizationToNurse(selectedNurseId, selectedPatientId);
+			JOptionPane.showMessageDialog(null, "Successful", "Info", JOptionPane.INFORMATION_MESSAGE);
 		}catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			}
@@ -262,7 +305,9 @@ public class DoctorView extends JFrame {
 	}
 	private Long nurseTableMouseClickedAction(MouseEvent arg0) {
 			int selectedRow=nurseTable.getSelectedRow();
+			System.out.println("selected row:"+selectedRow);
 			Long id=Long.parseLong(nurseTable.getValueAt(selectedRow, 0).toString());
+			System.out.println("nurse id:"+id);
 		return id;
 	}
 	private Long patientTableMouseClickedAction(MouseEvent arg0) {

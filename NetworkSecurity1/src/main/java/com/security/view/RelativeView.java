@@ -32,6 +32,7 @@ public class RelativeView extends JFrame {
 	private JTable nurseTable;
 	private Relative relative;
 	private Controller securityController;
+	private JTextField patientTextField;
 	/**
 	 * Launch the application.
 	 */
@@ -79,12 +80,12 @@ public class RelativeView extends JFrame {
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Calibri", Font.PLAIN, 16));
-		lblUsername.setBounds(10, 156, 86, 26);
+		lblUsername.setBounds(10, 197, 86, 26);
 		contentPane.add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Calibri", Font.PLAIN, 16));
-		lblPassword.setBounds(10, 198, 75, 26);
+		lblPassword.setBounds(10, 236, 75, 26);
 		contentPane.add(lblPassword);
 		
 		nameTextField = new JTextField();
@@ -103,13 +104,13 @@ public class RelativeView extends JFrame {
 		
 		usernameTextField = new JTextField();
 		usernameTextField.setText("");
-		usernameTextField.setBounds(91, 161, 163, 26);
+		usernameTextField.setBounds(91, 200, 163, 26);
 		contentPane.add(usernameTextField);
 		usernameTextField.setColumns(10);
-		usernameTextField.setText(relative.getUsername());
+		usernameTextField.setText(relative.getUserName());
 		
 		passwordTextField = new JTextField();
-		passwordTextField.setBounds(91, 200, 163, 26);
+		passwordTextField.setBounds(91, 239, 163, 26);
 		contentPane.add(passwordTextField);
 		passwordTextField.setColumns(10);
 		passwordTextField.setText(relative.getPassword());
@@ -121,12 +122,17 @@ public class RelativeView extends JFrame {
 			}
 		});
 		btnUpdate.setFont(new Font("Calibri", Font.PLAIN, 16));
-		btnUpdate.setBounds(10, 267, 89, 26);
+		btnUpdate.setBounds(165, 289, 89, 26);
 		contentPane.add(btnUpdate);
 		
 		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 		btnExit.setFont(new Font("Calibri", Font.PLAIN, 16));
-		btnExit.setBounds(696, 398, 89, 26);
+		btnExit.setBounds(10, 397, 89, 26);
 		contentPane.add(btnExit);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -154,6 +160,19 @@ public class RelativeView extends JFrame {
 		lblNurseTable.setFont(new Font("Calibri", Font.PLAIN, 16));
 		lblNurseTable.setBounds(309, 246, 100, 26);
 		contentPane.add(lblNurseTable);
+		
+		JLabel lblPatient = new JLabel("Patient:");
+		lblPatient.setFont(new Font("Calibri", Font.PLAIN, 16));
+		lblPatient.setBounds(10, 158, 65, 26);
+		contentPane.add(lblPatient);
+		
+		patientTextField = new JTextField();
+		patientTextField.setBounds(91, 161, 163, 26);
+		contentPane.add(patientTextField);
+		patientTextField.setColumns(10);
+		String patient=relative.getPatient().getFirstName()+ " "+relative.getPatient().getLastName();
+		patientTextField.setText(patient);
+		patientTextField.setEditable(false);
 	}
 
 	private void loadNurseTableData() {
@@ -186,5 +205,4 @@ public class RelativeView extends JFrame {
 		
 		
 	}
-
 }

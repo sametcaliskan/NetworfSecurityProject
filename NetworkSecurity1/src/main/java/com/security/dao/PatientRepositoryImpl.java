@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.security.model.Patient;
+import com.security.model.Relative;
 
 @Repository
 @Transactional(readOnly = true)
@@ -17,9 +18,14 @@ public class PatientRepositoryImpl implements PatientRepositoryInterface{
 	
 	@Override
 	public Patient findPatient(String userName) {
-		Query eventQuery = entityManager.createQuery("Select d from Patient d where d.username=:userName ");
-		eventQuery.setParameter("userName",userName );
-		return (Patient) eventQuery.getSingleResult();
+		try {
+			Query eventQuery = entityManager.createQuery("Select d from Patient d where d.userName=:userName ");
+			eventQuery.setParameter("userName",userName );
+			return (Patient) eventQuery.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+		
 		}
 }
 

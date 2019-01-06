@@ -15,8 +15,8 @@ public class NurseRepositoryImpl implements NurseRepositoryInterface{
 	@PersistenceContext
 	EntityManager entityManager;
 
-	public Nurse findNurse(String userName) {
-		Query eventQuery = entityManager.createQuery("Select d from Nurse d where d.username=:userName ");
+	public Nurse getNurseByUsername(String userName) {
+		Query eventQuery = entityManager.createQuery("Select d from Nurse d where d.userName=:userName ");
 		eventQuery.setParameter("userName",userName );
 		return (Nurse) eventQuery.getSingleResult();
 		}

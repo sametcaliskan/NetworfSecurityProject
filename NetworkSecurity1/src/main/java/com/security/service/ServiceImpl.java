@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.security.dao.DoctorPatientRepository;
 import com.security.dao.DoctorRepository;
+import com.security.dao.NursePatientRepository;
 import com.security.dao.NurseRepository;
 import com.security.dao.PatientRepository;
 import com.security.dao.RelativeRepository;
@@ -22,7 +23,7 @@ import com.security.model.Patient;
 import com.security.model.Relative;
 
 
-@Service("SecurityServiceInterface")
+@Service("SecurityService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class ServiceImpl implements SecurityServiceInterface {
 
@@ -40,6 +41,10 @@ public class ServiceImpl implements SecurityServiceInterface {
 	
 	@Autowired
 	private DoctorPatientRepository doctorPatientRepo;
+	
+	@Autowired
+	private NursePatientRepository nursePatientRepo;
+	
 	public DoctorRepository getDoctorRepo() {
 		return doctorRepo;
 	}
@@ -74,9 +79,11 @@ public class ServiceImpl implements SecurityServiceInterface {
 	public boolean doctorLogin(String userName,String password){
 		try {
 			Doctor doctor=doctorRepo.findDoctor(userName);
-			if(doctor.getPassword()==password) {
+			if(doctor.getUserName().equals(userName)) {
+				System.out.println("password is true");
 				return true;
 			}
+			System.out.println("password is wrong");
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,10 +94,9 @@ public class ServiceImpl implements SecurityServiceInterface {
 	}
 	@Override
 	public boolean patientLogin(String userName,String password) {
-		System.out.println("hereee");
 		Patient patient=patientRepo.findPatient(userName);
 		if(patient!=null) {
-			if(patient.getPassword()==Encryption.sha256Encrypt(password)) {
+			if(patient.getUserName().equals(userName)) {
 				return true;}
 			return false;
 		}
@@ -98,9 +104,9 @@ public class ServiceImpl implements SecurityServiceInterface {
 	}
 	@Override
 	public boolean nurseLogin(String userName,String password) {
-		Nurse nurse=nurseRepo.findNurse(userName);
+		Nurse nurse=nurseRepo.getNurseByUsername(userName);
 		if(nurse!=null) {
-			if(nurse.getPassword()==Encryption.sha256Encrypt(password)) {
+			if(nurse.getUserName().equals(userName)) {
 				return true;}
 			return false;
 		}
@@ -110,27 +116,31 @@ public class ServiceImpl implements SecurityServiceInterface {
 	public boolean relativeLogin(String userName,String password) {
 		Relative relative=relativeRepo.findRelative(userName);
 		if(relative!=null) {
-			if(relative.getPassword()==Encryption.sha256Encrypt(password)) {
+			if(relative.getUserName().equals(userName)) {
 				return true;}
 			return false;
 		}
 		return false;
 	}
 	@Override
-	public void giveAuthorizationToDoctor(Long doctorId,Long patientId) {
+	public DoctorPatient giveAuthorizationToDoctor(Long doctorId,Long patientId) {
 		Doctor doctor=doctorRepo.getOne(doctorId);
 		Patient patient=patientRepo.getOne(patientId);
 		DoctorPatient authorization=new DoctorPatient(doctor,patient);
-		patient.addDoctor(authorization);
-		doctor.addPatient(authorization);
+		doctorPatientRepo.save(authorization);
+		return authorization;
+		//patient.addDoctor(authorization);
+		//doctor.addPatient(authorization);
 	}
 	@Override
-	public void giveAuthorizationToNurse(Long nurseId,Long patientId) {
+	public NursePatient giveAuthorizationToNurse(Long nurseId,Long patientId) {
 		Nurse nurse=nurseRepo.getOne(nurseId);
 		Patient patient=patientRepo.getOne(patientId);
 		NursePatient authorization=new NursePatient(nurse,patient);
-		nurse.addPatient(authorization);
-		patient.addNurse(authorization);
+		nursePatientRepo.save(authorization);
+		//nurse.addPatient(authorization);
+		//patient.addNurse(authorization);
+		return authorization;
 	}
 	@Override
 	public List<Patient> getAllPatients() {
@@ -151,8 +161,10 @@ public class ServiceImpl implements SecurityServiceInterface {
 		Patient patient=new Patient(name,surname,birthday,diagnostic);
 		patient.setPassword(password);
 		String username=name+surname;
-		if((patientRepo.findPatient(username))==null) {
+		if(patientRepo.findPatient(username)==null) {
+			System.out.println("savig");
 		patientRepo.save(patient);
+		System.out.println("saved");
 		}
 		else {
 			username=Encryption.createUsername(username);
@@ -162,48 +174,89 @@ public class ServiceImpl implements SecurityServiceInterface {
 		return patient;
 	}
 	@Override
-	public void updateDoctor(Long id, String username, String password) {
+	public Doctor updateDoctor(Long id, String username, String password) {
 		Doctor doctor=doctorRepo.getOne(id);
 		doctor.setUserName(username);
 		doctor.setPassword(password);
+		return doctor;
 	}
 	@Override
-	public void updateNurse(Long id, String username, String password) {
+	public Nurse updateNurse(Long id, String username, String password) {
 		Nurse nurse=nurseRepo.getOne(id);
 		nurse.setUserName(username);
 		nurse.setPassword(password);
+		return nurse;
 	}
 	@Override
-	public void updateRelative(Long id, String username, String password) {
+	public Relative updateRelative(Long id, String username, String password) {
 		Relative relative=relativeRepo.getOne(id);
-		relative.setUsername(username);
+		relative.setUserName(username);
 		relative.setPassword(password);
+		return relative;
 	}
 	@Override
 	public List<Doctor> getAllDoctors() {
 		return doctorRepo.findAll();
 	}
 	@SuppressWarnings("unused")
+	
 	@Override
 	public List<Doctor> getPatientDoctors(Long id) {
-		List<Long> doctorsId=doctorPatientRepo.getDoctorPatient(id);
-		List<Doctor> doctors=new ArrayList<>();
-		for(Long idd:doctorsId) {
-			Doctor doctor=doctorRepo.getOne(id);
-			doctors.add(doctor);
-		}
-		return doctors;
+		return doctorPatientRepo.getPatientDoctors(id);
 	}
 	@Override
-	public void addRelative(String name, String surname, Long id) {
+	public Relative addRelative(String name, String surname, Long id) {
 		Relative relative=new Relative(name,surname);
 		Patient patient=patientRepo.getOne(id);
 		patient.setRelative(relative);
-		
+		relative.setPatient(patient);
+		relativeRepo.save(relative);
+		return relative;
 	}
 	@Override
 	public void deleteRelative(Long id) {
 		relativeRepo.deleteById(id);
+	}
+	public void findme() {
+		System.out.println("finded mee");
+		
+	}
+	@Override
+	public List<Patient> getDoctorPatient(Long id) {
+
+		List<Patient> patients=doctorPatientRepo.getPatients(id);
+		return patients;
+		}
+	
+	@Override
+	public DoctorPatient addDoctorPatient(Doctor doctor,Patient patient) {
+	DoctorPatient dp=new DoctorPatient(doctor,patient);
+	doctorPatientRepo.save(dp);	
+		return dp;
+	}
+	@Override
+	public List<Nurse> getDoctorNurses(Long id) {
+		return doctorRepo.getDoctorNurses(id);
+	}
+	@Override
+	public Nurse getNurseByUsername(String username) {
+		return nurseRepo.getNurseByUsername(username);
+	}
+	@Override
+	public Relative getRelativeByUsername(String username) {
+		return relativeRepo.findRelative(username);
+	}
+	@Override
+	public List<Patient> getNursePatients(Long id) {
+		return nursePatientRepo.getNursePatients(id);
+	}
+	@Override
+	public Relative getRelativeOfPatient(Long id) {
+		return relativeRepo.getRelativeOfPatient(id);
+	}
+	@Override
+	public List<Nurse> getPatientNurses(Long id) {
+		return nursePatientRepo.getPatientNurses(id);
 	}
 	
 }

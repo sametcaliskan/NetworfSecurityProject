@@ -6,9 +6,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.hibernate.id.GUIDGenerator;
+
 import com.security.controller.Controller;
 import com.security.model.Doctor;
+import com.security.model.Nurse;
 import com.security.model.Patient;
+import com.security.model.Relative;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,6 +25,8 @@ import java.awt.Font;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class PatientView extends JFrame {
@@ -258,6 +264,11 @@ public class PatientView extends JFrame {
 		relativeSurnameTextField.setColumns(10);
 		
 		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		});
 		btnExit.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnExit.setBounds(9, 496, 89, 26);
 		contentPane.add(btnExit);
@@ -269,6 +280,17 @@ public class PatientView extends JFrame {
 		nurseModel.addColumn("Id");
 		nurseModel.addColumn("name");
 		nurseModel.addColumn("surname");
+		try {
+			for(Nurse nurse:securityController.getPatientNurses(patient.getId())) {
+				nurseModel.addRow(new Object[] {
+						nurse.getId(),
+						nurse.getFirstName(),
+						nurse.getLastName()
+				});
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		nurseTable.setModel(nurseModel);
 		
 	}
@@ -278,6 +300,16 @@ public class PatientView extends JFrame {
 		relativeModel.addColumn("Id");
 		relativeModel.addColumn("name");
 		relativeModel.addColumn("surname");
+		try {
+			Relative relative=securityController.getRelativeOfPatient(patient.getId());
+			relativeModel.addRow(new Object[] {
+					relative.getId(),
+					relative.getFirstName(),
+					relative.getLastName()
+			});
+		} catch (Exception e) {
+			
+		}
 		relativeTable.setModel(relativeModel);
 		
 	}
@@ -338,17 +370,19 @@ public class PatientView extends JFrame {
 		}
 
 	private void addRelativeButtonAction(ActionEvent arg0) {
+		if(patient.getRelative()==null) {
 		try {
 			String name=relativeNameTextField.getText();
 			String surname=relativeSurnameTextField.getText();
-			if(patient.getRelative()==null) {
 				securityController.addRelative(name,surname,patient.getId());
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "You already have a relative.Before you add new relative, delete the relative.");
-			}
-		}catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Successfull", "Info",JOptionPane.INFORMATION_MESSAGE);
+				loadRelativeTableData();
+			}catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		}else 
+		{
+			JOptionPane.showMessageDialog(null, "You already have a relative.Before you add new relative, delete the relative.","Info",JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -357,6 +391,7 @@ public class PatientView extends JFrame {
 			int selectedRow=relativeTable.getSelectedRow();
 			Long id=Long.parseLong(relativeTable.getValueAt(selectedRow, 0).toString());
 			securityController.deleteRelative(id);
+			loadRelativeTableData();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,e.getMessage());
 		}

@@ -17,13 +17,13 @@ public class Relative {
 	private String firstName;
 	private String lastName;
 	private String password;
-	private String username;
+	private String userName;
 	private Patient patient;
 	protected Relative() {}
 	public Relative(String firstName,String lastName) {
 		this.firstName=firstName;
 		this.lastName=lastName;
-		this.username=firstName+lastName;
+		this.userName=firstName+lastName;
 	}
 	public void setId(Long id) {
 		this.id = id;
@@ -46,25 +46,25 @@ public class Relative {
 		return lastName;
 	}
 	public void setPassword(String password) {
-		String pass=Encryption.sha256Encrypt(password);
+		String pass=Encryption.sha256Encrypt("hello");
 		this.password = pass;
 	}
 	public String getPassword() {
 		return password;
 	}
     @OneToOne
-    @JoinColumn(name ="patientId")
+    @JoinColumn(name ="patient")
 	public Patient getPatient() {
 		return patient;
 	}
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-	public void setUsername(String username) {
-		this.username=username;
+	public void setUserName(String username) {
+		this.userName=username;
 	}
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
 }

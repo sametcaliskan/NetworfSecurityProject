@@ -17,9 +17,24 @@ public class RelativeRepositoryImpl implements RelativeRepositoryInterface{
 
 	
 	public Relative findRelative(String userName) {
-		Query eventQuery = entityManager.createQuery("Select d from Relative d where d.username=:userName ");
+		Query eventQuery = entityManager.createQuery("Select d from Relative d where d.userName=:userName ");
 		eventQuery.setParameter("userName",userName );
 		return (Relative) eventQuery.getSingleResult();
 		}
+
+
+	@Override
+	public Relative getRelativeOfPatient(Long id) {
+		try {
+			
+		
+		Query eventQuery = entityManager.createQuery("Select d from Relative d where d.patient.id=:id ");
+		eventQuery.setParameter("id",id );
+		return (Relative) eventQuery.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 }
 

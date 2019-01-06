@@ -43,6 +43,7 @@ public class NetworkSecurity1Application {
 			 ApplicationContext context = new AnnotationConfigApplicationContext(SpringContext.class); 
 				LoginView loginView=(LoginView) context.getBean("loginView");
 				loginView.setVisible(true);
+				
 				//adminView.run();
 					}catch(Exception e) {
 						e.printStackTrace();

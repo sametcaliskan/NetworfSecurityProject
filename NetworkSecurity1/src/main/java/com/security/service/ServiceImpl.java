@@ -40,6 +40,36 @@ public class ServiceImpl implements SecurityServiceInterface {
 	
 	@Autowired
 	private DoctorPatientRepository doctorPatientRepo;
+	public DoctorRepository getDoctorRepo() {
+		return doctorRepo;
+	}
+	public void setDoctorRepo(DoctorRepository doctorRepo) {
+		this.doctorRepo = doctorRepo;
+	}
+	public NurseRepository getNurseRepo() {
+		return nurseRepo;
+	}
+	public void setNurseRepo(NurseRepository nurseRepo) {
+		this.nurseRepo = nurseRepo;
+	}
+	public PatientRepository getPatientRepo() {
+		return patientRepo;
+	}
+	public void setPatientRepo(PatientRepository patientRepo) {
+		this.patientRepo = patientRepo;
+	}
+	public RelativeRepository getRelativeRepo() {
+		return relativeRepo;
+	}
+	public void setRelativeRepo(RelativeRepository relativeRepo) {
+		this.relativeRepo = relativeRepo;
+	}
+	public DoctorPatientRepository getDoctorPatientRepo() {
+		return doctorPatientRepo;
+	}
+	public void setDoctorPatientRepo(DoctorPatientRepository doctorPatientRepo) {
+		this.doctorPatientRepo = doctorPatientRepo;
+	}
 	@Override
 	public boolean doctorLogin(String userName,String password){
 		try {

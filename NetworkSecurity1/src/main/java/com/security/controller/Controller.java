@@ -17,7 +17,7 @@ public class Controller {
 	public static Controller controller;
 	
 	@Autowired
-	 SecurityServiceInterface securityService;
+	private SecurityServiceInterface securityService;
 	
 	public static Controller getController() {
 		if(controller==null) {
@@ -27,6 +27,14 @@ public class Controller {
 			return controller;
 	}
 	
+	public SecurityServiceInterface getSecurityService() {
+		return securityService;
+	}
+	
+	public void setSecurityService(SecurityServiceInterface securityService) {
+		this.securityService = securityService;
+	}
+
 	public boolean validateLogin(String username,String password,String user) {
 		
 		switch(user) {

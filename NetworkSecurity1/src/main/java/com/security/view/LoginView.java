@@ -1,11 +1,10 @@
 package com.security.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 
 import com.security.controller.Controller;
 import com.security.model.Doctor;
@@ -20,6 +19,8 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
+@SuppressWarnings("serial")
 public class LoginView extends JFrame {
 
 	private JPanel contentPane;
@@ -141,10 +142,10 @@ public class LoginView extends JFrame {
 				}
 			}
 			else if(rdbtnPatient.isSelected()) {
-				if(/*securityController.validateLogin(username,password,"Patient")*/1==1) {
-					//Patient patient=securityController.getPatientByUsername(username);
-					System.out.println("here2");
-					Patient patient=new Patient("samet", "caliskan","20.10.2015","grip");
+				if(securityController.validateLogin(username,password,"Patient")) {
+					Patient patient=securityController.getPatientByUsername(username);
+					
+					//Patient patient=new Patient("samet", "caliskan","20.10.2015","grip");
 					PatientView patientScreen=new PatientView( patient );
 					this.setVisible(false);
 					patientScreen.setVisible(true);

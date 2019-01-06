@@ -22,7 +22,7 @@ import com.security.model.Patient;
 import com.security.model.Relative;
 
 
-@Service
+@Service("SecurityServiceInterface")
 @Transactional(propagation = Propagation.REQUIRED)
 public class ServiceImpl implements SecurityServiceInterface {
 
@@ -88,16 +88,16 @@ public class ServiceImpl implements SecurityServiceInterface {
 	}
 	@Override
 	public void giveAuthorizationToDoctor(Long doctorId,Long patientId) {
-		Doctor doctor=doctorRepo.findOne(doctorId);
-		Patient patient=patientRepo.findOne(patientId);
+		Doctor doctor=doctorRepo.getOne(doctorId);
+		Patient patient=patientRepo.getOne(patientId);
 		DoctorPatient authorization=new DoctorPatient(doctor,patient);
 		patient.addDoctor(authorization);
 		doctor.addPatient(authorization);
 	}
 	@Override
 	public void giveAuthorizationToNurse(Long nurseId,Long patientId) {
-		Nurse nurse=nurseRepo.findOne(nurseId);
-		Patient patient=patientRepo.findOne(patientId);
+		Nurse nurse=nurseRepo.getOne(nurseId);
+		Patient patient=patientRepo.getOne(patientId);
 		NursePatient authorization=new NursePatient(nurse,patient);
 		nurse.addPatient(authorization);
 		patient.addNurse(authorization);
@@ -133,19 +133,19 @@ public class ServiceImpl implements SecurityServiceInterface {
 	}
 	@Override
 	public void updateDoctor(Long id, String username, String password) {
-		Doctor doctor=doctorRepo.findOne(id);
+		Doctor doctor=doctorRepo.getOne(id);
 		doctor.setUserName(username);
 		doctor.setPassword(password);
 	}
 	@Override
 	public void updateNurse(Long id, String username, String password) {
-		Nurse nurse=nurseRepo.findOne(id);
+		Nurse nurse=nurseRepo.getOne(id);
 		nurse.setUserName(username);
 		nurse.setPassword(password);
 	}
 	@Override
 	public void updateRelative(Long id, String username, String password) {
-		Relative relative=relativeRepo.findOne(id);
+		Relative relative=relativeRepo.getOne(id);
 		relative.setUsername(username);
 		relative.setPassword(password);
 	}
@@ -153,12 +153,13 @@ public class ServiceImpl implements SecurityServiceInterface {
 	public List<Doctor> getAllDoctors() {
 		return doctorRepo.findAll();
 	}
+	@SuppressWarnings("unused")
 	@Override
 	public List<Doctor> getPatientDoctors(Long id) {
 		List<Long> doctorsId=doctorPatientRepo.getDoctorPatient(id);
 		List<Doctor> doctors=new ArrayList<>();
 		for(Long idd:doctorsId) {
-			Doctor doctor=doctorRepo.findOne(idd);
+			Doctor doctor=doctorRepo.getOne(id);
 			doctors.add(doctor);
 		}
 		return doctors;
@@ -166,13 +167,13 @@ public class ServiceImpl implements SecurityServiceInterface {
 	@Override
 	public void addRelative(String name, String surname, Long id) {
 		Relative relative=new Relative(name,surname);
-		Patient patient=patientRepo.findOne(id);
+		Patient patient=patientRepo.getOne(id);
 		patient.setRelative(relative);
 		
 	}
 	@Override
 	public void deleteRelative(Long id) {
-		relativeRepo.delete(id);
+		relativeRepo.deleteById(id);
 	}
 	
 }

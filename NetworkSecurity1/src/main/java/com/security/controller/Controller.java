@@ -3,23 +3,21 @@ package com.security.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import com.security.model.Doctor;
 import com.security.model.Patient;
 import com.security.service.SecurityServiceInterface;
-import com.security.service.ServiceImpl;
 
 
 
-@Transactional(propagation = Propagation.NEVER)
+
+//@Transactional(propagation = Propagation.NEVER)
 public class Controller {
 	public static Controller controller;
 	
 	@Autowired
-	private SecurityServiceInterface securityService;
+	 SecurityServiceInterface securityService;
 	
 	public static Controller getController() {
 		if(controller==null) {
@@ -36,16 +34,8 @@ public class Controller {
 				System.out.println("controller:"+username+password);
 				securityService.doctorLogin(username, password);
 				break;
-			case "Patient":
-				System.out.println(username+password);
-				String a=username;
-				String b=password;
-				System.out.println(a+b);
-				try {
-				boolean flag= securityService.patientLogin(a,b);
-					break;}catch(Exception e){
-						e.getMessage();
-					}
+			case "Patient":	
+				 securityService.patientLogin(username,password);
 			case "Nurse":
 				return securityService.nurseLogin(username, password);
 			case "Relative":

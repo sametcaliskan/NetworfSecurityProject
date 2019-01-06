@@ -1,14 +1,10 @@
 package com.security.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import org.hibernate.type.YesNoType;
 
 import com.security.controller.Controller;
 import com.security.model.Doctor;
@@ -22,10 +18,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.JTextPane;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
+@SuppressWarnings("serial")
 public class PatientView extends JFrame {
 	private Patient patient;
 	private Controller securityController;

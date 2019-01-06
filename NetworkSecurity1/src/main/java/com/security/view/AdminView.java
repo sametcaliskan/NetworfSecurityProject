@@ -1,15 +1,15 @@
 package com.security.view;
 
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import com.security.controller.Controller;
 import com.security.model.Doctor;
@@ -20,17 +20,20 @@ import javax.swing.JButton;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JScrollBar;
+
 import javax.swing.JRadioButton;
 
 
+@SuppressWarnings("serial")
 public class AdminView extends JFrame{
 
+	@SuppressWarnings("unused")
 	private String[] args;
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private JLabel LoginSystem;
+	@SuppressWarnings("unused")
 	private JTextField txtRole;
 	private JButton btnLogin;
 	private JButton btnExit;
@@ -150,24 +153,21 @@ public class AdminView extends JFrame{
 
 
 	}
+	@SuppressWarnings("unused")
 	public void loginButtonAction(ActionEvent arg0) {
 		try {
 			char[] pass=txtPassword.getPassword();
 			String username =txtUsername.getText();
 			String password=new String(pass);
-		//	System.out.println(username+password);
-			//String role =txtRole.getText();
 			if(rdbtnDoctor.isSelected()) {
-				if(/*securityController.validateLogin(username,password,rdbtnDoctor.getText())*/1==1) {
+				if(securityController.validateLogin(username,password,rdbtnDoctor.getText())) {
 					Doctor doctor=securityController.getDoctorByUsername(username);
 					DoctorView doctorScreen=new DoctorView(doctor);
 					this.setVisible(false);
 				}
 			}
 			else if(rdbtnPatient.isSelected()) {
-				if(/*securityController.validateLogin(username,password,"Patient")*/1==1) {
-					//Patient patient=securityController.getPatientByUsername(username);
-					System.out.println("here2");
+				if(securityController.validateLogin(username,password,"Patient")) {
 					Patient patient=new Patient("samet", "caliskan","20.10.2015","grip");
 					PatientView patientScreen=new PatientView( patient );
 					this.setVisible(false);

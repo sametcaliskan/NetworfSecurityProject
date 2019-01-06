@@ -1,7 +1,6 @@
 package com.security.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,6 +20,7 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+@SuppressWarnings("serial")
 public class NurseView extends JFrame {
 
 	private JPanel contentPane;

@@ -1,11 +1,10 @@
 package com.security;
 
-import java.awt.EventQueue;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -31,6 +30,7 @@ public class NetworkSecurity1Application {
 	    SpringApplicationBuilder builder = new SpringApplicationBuilder(NetworkSecurity1Application.class);
 	    builder.headless(false).run(args);
 	}
+	@SuppressWarnings("resource")
 	@Bean
 	public CommandLineRunner setup(PatientRepository patientRepo,DoctorRepository doctorRepo) {
 		return (args) -> {

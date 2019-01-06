@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.EventQueue;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -26,7 +26,7 @@ import java.awt.event.MouseEvent;
 public class DoctorView extends JFrame {
 
 	private JPanel contentPane;
-	@SuppressWarnings("unused")
+
 	private Doctor doctor;
 	private JTable patientTable;
 	private JTextField nameTextField;
